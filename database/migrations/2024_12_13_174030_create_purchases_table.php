@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
             $table->date('purchase_date')->nullable();
             $table->integer('quantity')->nullable();
+            $table->string('seat_no')->nullable();
             $table->timestamps();
         });
     }

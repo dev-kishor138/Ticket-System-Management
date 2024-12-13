@@ -4,14 +4,17 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TravelRouteController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('frontend.home');
-})->name('/');
+// Route::get('/', function () {
+//     return view('frontend.home');
+// })->name('/');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 Route::get('/login-page', function () {
@@ -50,19 +53,19 @@ Route::controller(TravelRouteController::class)->group(function () {
 });
 
 // Tickets related route 
-Route::controller(TicketController::class)->group(function () {
-    Route::get('/ticket', 'index')->name('ticket');
-    Route::get('/ticket/view', 'view');
-    Route::post('/ticket/store', 'store');
-    Route::get('/ticket/edit/{id}', 'edit');
-    Route::post('/ticket/update/{id}', 'update');
-    Route::get('/ticket/delete/{id}', 'delete');
-});
-// Purchase related route 
-// Route::controller(PurchaseController::class)->group(function () {
+// Route::controller(TicketController::class)->group(function () {
+//     Route::get('/ticket', 'index')->name('ticket');
 //     Route::get('/ticket/view', 'view');
 //     Route::post('/ticket/store', 'store');
 //     Route::get('/ticket/edit/{id}', 'edit');
 //     Route::post('/ticket/update/{id}', 'update');
 //     Route::get('/ticket/delete/{id}', 'delete');
 // });
+// Purchase related route 
+Route::controller(PurchaseController::class)->group(function () {
+    // Route::get('/purchase/view', 'view');
+    Route::post('/purchase/store', 'store');
+    // Route::get('/purchase/edit/{id}', 'edit');
+    // Route::post('/purchase/update/{id}', 'update');
+    // Route::get('/purchase/delete/{id}', 'delete');
+});
