@@ -16,7 +16,7 @@ class LoginController extends Controller
         // $user = User::where('email', $request->email)->latest()->first();
 
         // // Check if user exists and verify the password using Hash::check
-        // if ($user && Hash::check($request->password, $user->password)) {
+        // if ($user && Hasha::check($request->password, $user->password)) {
         //     // Redirect based on the user's role
         //     if ($user->role === 'admin') {
         //         return redirect('/admin/dashboard');
