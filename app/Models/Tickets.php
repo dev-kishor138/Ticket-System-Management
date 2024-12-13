@@ -13,4 +13,8 @@ class Tickets extends Model
     {
         return $this->belongsTo(Bus::class, 'bus_id', 'id');
     } //
+    public function travelRoute()
+    {
+        return $this->belongsTo(TravelRoute::class, 'route_id', 'id');
+    } //
 }

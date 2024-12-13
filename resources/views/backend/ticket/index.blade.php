@@ -13,8 +13,10 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Bus Name</th>
+                        <th scope="col">Travel Route</th>
                         <th scope="col">Price</th>
-                        <th scope="col">Time</th>
+                        <th scope="col">Start Time</th>
+                        <th scope="col">Reached Time</th>
                         <th scope="col">Available seats</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -40,7 +42,7 @@
                     <form class="ticketForm">
                         <div class="mb-2">
                             <label for="name" class="form-label">Bus Name</label>
-                            
+
                             <select class="form-select" aria-label="Default select example" name="bus_id">
                                 <option selected value="">Select Bus</option>
                                 @if ($buses)
@@ -54,14 +56,34 @@
                             <div class="form-text text-danger"></div>
                         </div>
                         <div class="mb-2">
+                            <label for="route_id" class="form-label">Travel Route</label>
+                            <select class="form-select" aria-label="Default select example" name="route_id">
+                                <option selected value="">Select Travel Route</option>
+                                @if ($travelRoutes)
+                                    @foreach ($travelRoutes as $travel)
+                                        <option value="{{ $travel->id }}">{{ $travel->travel_name }}</option>
+                                    @endforeach
+                                @else
+                                    <option value="">No Data Found</option>
+                                @endif
+                            </select>
+                            <div class="form-text text-danger"></div>
+                        </div>
+                        <div class="mb-2">
                             <label for="bus_number" class="form-label">Price</label>
                             <input type="number" name="price" class="form-control" id="price"
                                 aria-describedby="emailHelp" required>
                             <div class="form-text text-danger"></div>
                         </div>
                         <div class="mb-2">
-                            <label for="bus_number" class="form-label">Time</label>
-                            <input type="datetime" name="time" class="form-control" id="time"
+                            <label for="start_time" class="form-label">Start Time</label>
+                            <input type="time" name="start_time" class="form-control" id="start_time"
+                                aria-describedby="emailHelp" required>
+                            <div class="form-text text-danger"></div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="reach_time" class="form-label">Reached Time</label>
+                            <input type="time" name="reach_time" class="form-control" id="reach_time"
                                 aria-describedby="emailHelp" required>
                             <div class="form-text text-danger"></div>
                         </div>
@@ -97,10 +119,25 @@
                                 <option selected>Select Bus</option>
                                 @if ($buses)
                                     @foreach ($buses as $bus)
-                                        <option value="{{ $bus->id }}" >{{ $bus->name }}</option>
+                                        <option value="{{ $bus->id }}">{{ $bus->name }}</option>
                                     @endforeach
                                 @else
                                     <option value="">No Bus Found</option>
+                                @endif
+                            </select>
+                            <div class="form-text text-danger"></div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="route_id" class="form-label ">Travel Route</label>
+                            <select class="form-select route_id_edit" aria-label="Default select example"
+                                name="route_id">
+                                <option selected value="">Select Travel Route</option>
+                                @if ($travelRoutes)
+                                    @foreach ($travelRoutes as $travel)
+                                        <option value="{{ $travel->id }}">{{ $travel->travel_name }}</option>
+                                    @endforeach
+                                @else
+                                    <option value="">No Data Found</option>
                                 @endif
                             </select>
                             <div class="form-text text-danger"></div>
@@ -112,8 +149,14 @@
                             <div class="form-text text-danger"></div>
                         </div>
                         <div class="mb-2">
-                            <label for="bus_number" class="form-label">Time</label>
-                            <input type="datetime" name="time" class="form-control time_edit" id="time"
+                            <label for="start_time" class="form-label">Start Time</label>
+                            <input type="time" name="start_time" class="form-control start_time_edit" id="start_time"
+                                aria-describedby="emailHelp" required>
+                            <div class="form-text text-danger"></div>
+                        </div>
+                        <div class="mb-2">
+                            <label for="reach_time" class="form-label">Reached Time</label>
+                            <input type="time" name="reach_time" class="form-control reach_time_edit" id="reach_time"
                                 aria-describedby="emailHelp" required>
                             <div class="form-text text-danger"></div>
                         </div>
@@ -161,11 +204,17 @@
                         if (res.error.bus_id) {
                             toastr.error(res.error.bus_id);
                         }
+                        if (res.error.route_id) {
+                            toastr.error(res.error.route_id);
+                        }
                         if (res.error.price) {
                             toastr.error(res.error.price);
                         }
-                        if (res.error.time) {
-                            toastr.error(res.error.time);
+                        if (res.error.start_time) {
+                            toastr.error(res.error.start_time);
+                        }
+                        if (res.error.reach_time) {
+                            toastr.error(res.error.reach_time);
                         }
                         if (res.error.available_seats) {
                             toastr.error(res.error.available_seats);
@@ -184,7 +233,7 @@
                 method: 'GET',
                 success: function(res) {
                     const tickets = res.tickets;
-                    // console.log(banks.account_transaction);
+                    // console.log(tickets);
                     $('.showData').empty();
                     if (tickets.length > 0) {
                         $.each(tickets, function(index, ticket) {
@@ -193,8 +242,10 @@
                             tr.innerHTML = `
                                     <td>${index + 1}</td>
                                     <td>${ticket.bus.name ?? ""}</td>
+                                    <td>${ticket.travel_route.travel_name ?? ""}</td>
                                     <td>${ticket.price ?? ""}</td>
-                                    <td>${ticket.time ?? ""}</td>
+                                    <td>${ticket.start_time ?? ""}</td>
+                                    <td>${ticket.reach_time ?? ""}</td>
                                     <td>${ticket.available_seats ?? ""}</td>
                                     <td>
                                        <a href="#"  class="btn btn-primary ticket_edit" data-id="${ticket.id}" data-bs-toggle="modal" data-bs-target="#ticketUpdateModal"><i class="fa-solid fa-pen-to-square"></i></a>
@@ -239,8 +290,10 @@
                     if (res.status == 200) {
                         const ticket = res.ticket
                         $('.bus_id_edit').val(ticket.bus_id);
+                        $('.route_id_edit').val(ticket.route_id);
                         $('.price_edit').val(ticket.price);
-                        $('.time_edit').val(ticket.time);
+                        $('.start_time_edit').val(ticket.start_time);
+                        $('.reach_time_edit').val(ticket.reach_time);
                         $('.available_seats_edit').val(ticket.available_seats);
                         $('.update_ticket_btn').val(ticket.id);
                     } else {
@@ -275,17 +328,23 @@
                         showTicketData();
                         toastr.success(res.message);
                     } else {
-                        if (res.error.name) {
-                            toastr.error(res.error.name);
+                        if (res.error.bus_id) {
+                            toastr.error(res.error.bus_id);
+                        }
+                        if (res.error.route_id) {
+                            toastr.error(res.error.route_id);
                         }
                         if (res.error.price) {
                             toastr.error(res.error.price);
                         }
+                        if (res.error.start_time) {
+                            toastr.error(res.error.start_time);
+                        }
+                        if (res.error.reach_time) {
+                            toastr.error(res.error.reach_time);
+                        }
                         if (res.error.available_seats) {
                             toastr.error(res.error.available_seats);
-                        }
-                        if (res.error.time) {
-                            toastr.error(res.error.time);
                         }
                     }
                 }
