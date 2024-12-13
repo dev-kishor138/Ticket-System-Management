@@ -16,13 +16,13 @@ use App\Http\Controllers\Auth\SignUpController;
 // })->middleware('auth:api');
 
 // Open Routes
-Route::post("/register", [SignUpController::class, "register"]);
-Route::post("/login", [LoginController::class, "login"]);
+// Route::post("/register", [SignUpController::class, "register"]);
+// Route::post("/login", [LoginController::class, "login"]);
 
 
-// Route::get('/test', function () {
-//     return response()->json(['message' => 'API is working!']);
-// });
+Route::get('/test', function () {
+    return response()->json(['message' => 'API is working!']);
+});
 
 
 

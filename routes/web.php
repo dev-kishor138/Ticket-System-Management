@@ -53,14 +53,14 @@ Route::controller(TravelRouteController::class)->group(function () {
 });
 
 // Tickets related route 
-// Route::controller(TicketController::class)->group(function () {
-//     Route::get('/ticket', 'index')->name('ticket');
-//     Route::get('/ticket/view', 'view');
-//     Route::post('/ticket/store', 'store');
-//     Route::get('/ticket/edit/{id}', 'edit');
-//     Route::post('/ticket/update/{id}', 'update');
-//     Route::get('/ticket/delete/{id}', 'delete');
-// });
+Route::controller(TicketController::class)->group(function () {
+    Route::get('/ticket', 'index')->name('ticket');
+    Route::get('/ticket/view', 'view');
+    Route::post('/ticket/store', 'store');
+    Route::get('/ticket/edit/{id}', 'edit');
+    Route::post('/ticket/update/{id}', 'update');
+    Route::get('/ticket/delete/{id}', 'delete');
+});
 // Purchase related route 
 Route::controller(PurchaseController::class)->group(function () {
     // Route::get('/purchase/view', 'view');
